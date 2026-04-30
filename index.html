@@ -415,6 +415,82 @@ button:active {
 .petBtn.active {
   background: #ffe082;
 } 
+
+/* =====================
+   ダークモード
+===================== */
+
+body.dark {
+  background: #1e1e1e;
+  color: #eee;
+}
+
+body.dark::before {
+  background: rgba(0,0,0,0.4);
+}
+
+/* カード */
+body.dark .item {
+  background: #2a2a2a;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+/* 上部バー */
+body.dark .topbar {
+  background: rgba(40,40,40,0.9);
+}
+
+/* ボタン */
+body.dark button {
+  background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+  color: #eee;
+  box-shadow:
+    0 4px 0 #111,
+    0 6px 10px rgba(0,0,0,0.4);
+}
+
+/* 入力 */
+body.dark input {
+  background: #2a2a2a;
+  color: #eee;
+  border: 1px solid #555;
+}
+
+/* ラベル */
+body.dark .label {
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+}
+
+/* モーダル */
+body.dark .modalContent {
+  background: rgba(30,30,30,0.9);
+  color: #eee;
+}
+
+/* 選択中ペット */
+body.dark .petBtn.active {
+  background: #444;
+}
+
+  /* =====================
+   ダークでも色維持（重要）
+===================== */
+
+body.dark .likeBtn {
+  background: #4caf50; /* 緑 */
+  color: white;
+  box-shadow:
+    0 4px 0 #2e7d32,
+    0 6px 10px rgba(0,0,0,0.4);
+}
+
+body.dark .dislikeBtn {
+  background: #e53935; /* 赤 */
+  color: white;
+  box-shadow:
+    0 4px 0 #b71c1c,
+    0 6px 10px rgba(0,0,0,0.4);
+}
   
 </style>
 </head>
@@ -462,6 +538,7 @@ button:active {
   <button onclick="openLang()" id="langBtn"></button>
   <button id="soundBtn" onclick="toggleSound()">🔊 ON</button>
   <button onclick="openHelp()" id="helpBtn"></button>
+  <button id="darkBtn" onclick="toggleDark()">🌙</button>
 </div>
 
 <input type="file" id="hiddenUpload" accept="image/*" style="display:none;">
@@ -520,7 +597,7 @@ X（旧Twitter）：
 
 <script>
 
-  const APP_VERSION = "1.0.0";
+  const APP_VERSION = "1.0.1";
 
 /* =====================
    データ
@@ -1476,6 +1553,31 @@ document.getElementById("hiddenUpload").addEventListener("change", function(e) {
   reader.readAsDataURL(file);
 });
 
+let darkMode = JSON.parse(localStorage.getItem("darkMode") || "false");
+
+function toggleDark() {
+  darkMode = !darkMode;
+  localStorage.setItem("darkMode", darkMode);
+  applyDark();
+}
+
+function applyDark() {
+  const btn = document.getElementById("darkBtn");
+
+  if (darkMode) {
+    document.body.classList.add("dark");
+    if (btn) btn.textContent = "☀️";
+  } else {
+    document.body.classList.remove("dark");
+    if (btn) btn.textContent = "🌙";
+  }
+}
+
+  if (localStorage.getItem("darkMode") === null) {
+  darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
+
 function openHelp() {
   const modal = document.getElementById("helpModal").style.display = "flex";
 }
@@ -1518,6 +1620,7 @@ if (savedLang) {
 
   // 🐶初期描画
   updateStaticUI();
+  applyDark();
   renderPets();
   loadPetState();
   render();
@@ -1543,7 +1646,6 @@ if (savedLang) {
       modal.style.display = "flex";
     }, 300);
   }
-
 });
   
 </script>
