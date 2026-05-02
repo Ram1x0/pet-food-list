@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>料理ツール</title>
+
+<style>
+body {
+  font-family: sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+}
+
+/* 検索バー固定 */
+.search-bar {
+  position: sticky;
+  top: 0;
+  background: white;
+  padding: 10px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.search-wrapper {
+  position: relative;
+}
+
+.search-wrapper input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  font-size: 16px;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: #ddd;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: none;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 10px;
+}
+
+.card {
+  background: white;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.card img {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+}
+
+.detail {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+
+.hidden { display:none; }
+
+.win { color: green; }
+.lose { color: red; }
+</style>
+</head>
+
+<body>
+
+<!-- 検索 -->
+<div class="search-bar">
+  <div class="search-wrapper">
+    <input type="text" id="search" placeholder="料理名で検索..." oninput="filterFoods()">
+    <button class="clear-btn" onclick="clearSearch()">×</button>
+  </div>
+</div>
+
+<div class="container">
+
+<h2>🍳 料理一覧</h2>
+<div id="list"></div>
+
+<h2>⚔️ 比較</h2>
+<select id="foodA"></select>
+<select id="foodB"></select>
+<button onclick="compare()">比較する</button>
+
+<div id="compareResult"></div>
+
+</div>
+
+<script>
+
+// ▼ データ
+const foods = [
+{
+  name:"ブルーベリージャム",
+  image:"images/blueberry.jpg",
+  profit:561,
+  hourly:35000,
+  time:0.96,
+  cost:0,
+  stars:[170,255,340,680,1360],
+  materials:["ブルーベリー×4"],
+  stability:3,
+  ease:3
+},
+{
+  name:"コーンポタージュ",
+  image:"images/corn.jpg",
+  profit:2140,
+  hourly:848,
+  time:12,
+  cost:540,
+  stars:[1340,2010,2680,5360,10720],
+  materials:["牛乳×1","バター×1","トウモロコシ×2"],
+  stability:2,
+  ease:1
+}
+];
+
+let filteredFoods=[...foods];
+const list=document.getElementById("list");
+
+// 描画
+function renderList(){
+  list.innerHTML="";
+  filteredFoods.forEach((f,i)=>{
+    list.innerHTML+=`
+    <div class="card" onclick="toggleDetail(${i})">
+      <img src="${f.image}">
+      <div>
+        <b>${f.name}</b><br>
+        利益:${f.profit}<br>
+        時給:${f.hourly}
+      </div>
+    </div>
+    <div id="detail${i}" class="detail hidden">
+      時間:${f.time}分<br>
+      コスト:${f.cost}<br>
+      素材:${f.materials.join(",")}
+    </div>`;
+  });
+}
+
+renderList();
+
+// 詳細
+function toggleDetail(i){
+  document.getElementById("detail"+i).classList.toggle("hidden");
+}
+
+// 検索
+function filterFoods(){
+  const input=document.getElementById("search");
+  const keyword=input.value.toLowerCase();
+  const btn=document.querySelector(".clear-btn");
+
+  btn.style.display=keyword?"block":"none";
+
+  filteredFoods=foods.filter(f=>f.name.toLowerCase().includes(keyword));
+  renderList();
+}
+
+// クリア
+function clearSearch(){
+  document.getElementById("search").value="";
+  filteredFoods=[...foods];
+  document.querySelector(".clear-btn").style.display="none";
+  renderList();
+}
+
+// セレクト
+const selectA=document.getElementById("foodA");
+const selectB=document.getElementById("foodB");
+
+foods.forEach((f,i)=>{
+  selectA.innerHTML+=`<option value="${i}">${f.name}</option>`;
+  selectB.innerHTML+=`<option value="${i}">${f.name}</option>`;
+});
+
+// 比較
+function compare(){
+  const a=foods[selectA.value];
+  const b=foods[selectB.value];
+
+  let scoreA=0,scoreB=0;
+
+  function judge(x,y,rev=false){
+    if(!rev){
+      if(x>y){scoreA++;return"win";}
+      if(x<y){scoreB++;return"lose";}
+    }else{
+      if(x<y){scoreA++;return"win";}
+      if(x>y){scoreB++;return"lose";}
+    }
+    return"";
+  }
+
+  let p=judge(a.profit,b.profit);
+  let h=judge(a.hourly,b.hourly);
+  let t=judge(a.time,b.time,true);
+
+  let winner=scoreA>scoreB?a.name:b.name;
+
+  document.getElementById("compareResult").innerHTML=`
+  <div class="detail">
+  🏆 ${winner}<br>
+  利益:<span class="${p}">${a.profit}</span> vs ${b.profit}<br>
+  時給:<span class="${h}">${a.hourly}</span> vs ${b.hourly}<br>
+  時間:<span class="${t}">${a.time}</span> vs ${b.time}
+  </div>`;
+}
+
+</script>
+
+</body>
+</html>
