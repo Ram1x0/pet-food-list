@@ -66,8 +66,9 @@ body {
 }
 
 .hidden { display:none; }
-.win { color:green; }
-.lose { color:red; }
+
+.high { color:green; font-weight:bold; }
+.low { color:#888; }
 </style>
 </head>
 
@@ -84,7 +85,6 @@ body {
 
 <h2>🍳 料理一覧</h2>
 
-<!-- ★選択 -->
 <select id="starSelect" onchange="renderList()">
   <option value="0">★1</option>
   <option value="1">★2</option>
@@ -92,6 +92,8 @@ body {
   <option value="3">★4</option>
   <option value="4">★5</option>
 </select>
+
+<button onclick="sortByHourly()">時給順</button>
 
 <div id="list"></div>
 
@@ -106,13 +108,12 @@ body {
 
 <script>
 
-// ▼ データ（★ごと）
 const foods = [
 {
   name:"ブルーベリージャム",
   image:"foods/blueberry.jpg",
   cost:0,
-  time:0.96,
+  time:1, // 修正（仮）
   prices:[170,255,340,680,1360],
   materials:["ブルーベリー×4"]
 },
@@ -147,75 +148,21 @@ const foods = [
   time:1,
   prices:[290,435,580,1160,2320],
   materials:["コーヒー豆×4"]
-},
-{
-  name:"カフェラテ",
-  image:"foods/latte.jpg",
-  cost:200,
-  time:1,
-  prices:[300,450,600,1200,2400],
-  materials:["コーヒー豆×2","牛乳×2"]
-},
-{
-  name:"ティラミス",
-  image:"foods/tiramisu.jpg",
-  cost:420,
-  time:1,
-  prices:[530,795,1060,2120,4240],
-  materials:["コーヒー豆×1","卵×1","牛乳×1","チーズ×1"]
-},
-{
-  name:"ラズベリージャム",
-  image:"foods/raspberry.jpg",
-  cost:0,
-  time:1,
-  prices:[250,375,500,1000,2000],
-  materials:["ラズベリー×4"]
-},
-{
-  name:"リンゴジャム",
-  image:"foods/apple.jpg",
-  cost:0,
-  time:1,
-  prices:[270,405,540,1080,2160],
-  materials:["リンゴ×4"]
-},
-{
-  name:"オレンジジャム",
-  image:"foods/orange.jpg",
-  cost:0,
-  time:1,
-  prices:[270,405,540,1080,2160],
-  materials:["オレンジ×4"]
-},
-{
-  name:"パイナップルジャム",
-  image:"foods/pineapple.jpg",
-  cost:60,
-  time:30,
-  prices:[280,420,560,1120,2240],
-  materials:["パイナップル×4"]
-},
-{
-  name:"温泉卵",
-  image:"foods/onsen_egg.jpg",
-  cost:100,
-  time:1,
-  prices:[130,195,260,520,1040],
-  materials:["卵×1"]
-},
-{
-  name:"若草のケーキ",
-  image:"foods/cake.jpg",
-  cost:395,
-  time:1,
-  prices:[690,1035,1380,2760,5520],
-  materials:["小麦×1","牛乳×1","抹茶×1","雑草×1"]
 }
 ];
 
 let filteredFoods=[...foods];
 const list=document.getElementById("list");
+
+// ▼ 時給計算
+function calcHourly(f, star){
+  const price = f.prices[star];
+  const profit = price - f.cost;
+
+  if(!f.time || f.time <= 0) return 0;
+
+  return Math.round((profit / f.time) * 60);
+}
 
 // ▼ 描画
 function renderList(){
@@ -226,7 +173,9 @@ function renderList(){
 
     const price = f.prices[star];
     const profit = price - f.cost;
-    const hourly = (profit / f.time * 60).toFixed(1);
+    const hourly = calcHourly(f, star);
+
+    const colorClass = hourly > 1000 ? "high" : "low";
 
     list.innerHTML+=`
     <div class="card" onclick="toggleDetail(${i})">
@@ -234,7 +183,7 @@ function renderList(){
       <div>
         <b>${f.name}</b><br>
         利益:${profit}<br>
-        時給:${hourly}
+        <span class="${colorClass}">時給:${hourly}</span>
       </div>
     </div>
 
@@ -250,6 +199,17 @@ function renderList(){
 }
 
 renderList();
+
+// ▼ ソート
+function sortByHourly(){
+  const star = document.getElementById("starSelect").value;
+
+  filteredFoods.sort((a,b)=>{
+    return calcHourly(b,star) - calcHourly(a,star);
+  });
+
+  renderList();
+}
 
 // 詳細
 function toggleDetail(i){
@@ -293,19 +253,15 @@ function compare(){
   const a=foods[selectA.value];
   const b=foods[selectB.value];
 
-  const profitA = a.prices[star] - a.cost;
-  const profitB = b.prices[star] - b.cost;
-
-  const hourlyA = profitA / a.time * 60;
-  const hourlyB = profitB / b.time * 60;
+  const hourlyA = calcHourly(a,star);
+  const hourlyB = calcHourly(b,star);
 
   let winner = hourlyA > hourlyB ? a.name : b.name;
 
   document.getElementById("compareResult").innerHTML=`
   <div class="detail">
   🏆 ${winner}<br>
-  利益:${profitA} vs ${profitB}<br>
-  時給:${hourlyA.toFixed(1)} vs ${hourlyB.toFixed(1)}
+  時給:${hourlyA} vs ${hourlyB}
   </div>`;
 }
 
