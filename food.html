@@ -52,6 +52,23 @@ body {
   border-radius: 10px;
 }
 
+.search-wrapper {
+  position: relative;
+}
+
+.search-wrapper input {
+  width: 100%;
+  padding: 10px 35px 10px 10px;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+}
+
 .detail {
   background: white;
   padding: 10px;
@@ -76,7 +93,10 @@ body {
 <body>
 
 <div class="search-bar">
+<div class="search-wrapper">
 <input type="text" id="search" placeholder="料理名で検索..." oninput="filterFoods()">
+<button class="clear-btn" onclick="clearSearch()">×</button>
+</div>
 </div>
 
 <div class="compare-box">
@@ -93,7 +113,10 @@ body {
 
 <select id="starSelect" onchange="renderList()">
   <option value="0">★1</option>
-  <option value="4">★5（おすすめ）</option>
+  <option value="1">★2</option>
+  <option value="2">★3</option>
+  <option value="3">★4</option>
+  <option value="4">★5</option>
 </select>
 
 <div class="toggle-box">
@@ -104,6 +127,7 @@ body {
 </div>
 
 <button onclick="sortByProfit()">利益順</button>
+<button onclick="sortByHourly()">時給順</button>
 
 <div id="list"></div>
 
@@ -715,6 +739,12 @@ function sortByProfit(){
   renderList();
 }
 
+function sortByHourly(){
+  const star = document.getElementById("starSelect").value;
+  filteredFoods.sort((a,b)=>calcHourly(b,star)-calcHourly(a,star));
+  renderList();
+}
+
 // 詳細
 function toggleDetail(i){
   document.getElementById("detail"+i).classList.toggle("hidden");
@@ -724,6 +754,13 @@ function toggleDetail(i){
 function filterFoods(){
   const keyword=document.getElementById("search").value.toLowerCase();
   filteredFoods=foods.filter(f=>f.name.toLowerCase().includes(keyword));
+  renderList();
+}
+
+function clearSearch(){
+  document.getElementById("search").value="";
+  filteredFoods=[...foods];
+  document.querySelector(".clear-btn").style.display="none";
   renderList();
 }
 
