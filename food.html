@@ -6,11 +6,7 @@
 <title>料理ツール</title>
 
 <style>
-
-/* ★はみ出し防止 */
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   font-family: sans-serif;
@@ -18,34 +14,14 @@ body {
   margin: 0;
 }
 
-/* 検索バー */
 .search-bar {
   position: sticky;
   top: 0;
   background: white;
   padding: 10px;
   z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.search-wrapper {
-  position: relative;
-}
-
-.search-wrapper input {
-  width: 100%;
-  padding: 10px 35px 10px 10px;
-}
-
-.clear-btn {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: none;
-}
-
-/* ★比較固定 */
 .compare-box {
   position: sticky;
   top: 60px;
@@ -85,29 +61,30 @@ body {
 
 .hidden { display:none; }
 
-/* ★色分け調整 */
 .high { color:green; font-weight:bold; }
+.rankS { color:#ff9800; font-weight:bold; }
+.rankA { color:green; }
+.rankB { color:#999; }
+.rankC { color:#ccc; }
 
+.toggle-box {
+  margin-top:5px;
+}
 </style>
 </head>
 
 <body>
 
-<!-- 検索 -->
 <div class="search-bar">
-  <div class="search-wrapper">
-    <input type="text" id="search" placeholder="料理名で検索..." oninput="filterFoods()">
-    <button class="clear-btn" onclick="clearSearch()">×</button>
-  </div>
+<input type="text" id="search" placeholder="料理名で検索..." oninput="filterFoods()">
 </div>
 
-<!-- ★比較（上に移動＋固定） -->
 <div class="compare-box">
-  <b>⚔️ 比較</b><br>
-  <select id="foodA"></select>
-  <select id="foodB"></select>
-  <button onclick="compare()">比較</button>
-  <div id="compareResult"></div>
+<b>⚔️ 比較</b><br>
+<select id="foodA"></select>
+<select id="foodB"></select>
+<button onclick="compare()">比較</button>
+<div id="compareResult"></div>
 </div>
 
 <div class="container">
@@ -116,13 +93,17 @@ body {
 
 <select id="starSelect" onchange="renderList()">
   <option value="0">★1</option>
-  <option value="1">★2</option>
-  <option value="2">★3</option>
-  <option value="3">★4</option>
-  <option value="4">★5</option>
+  <option value="4">★5（おすすめ）</option>
 </select>
 
-<button onclick="sortByHourly()">時給順</button>
+<div class="toggle-box">
+<label>
+<input type="checkbox" id="toggleHourly" checked onchange="renderList()">
+時給を表示
+</label>
+</div>
+
+<button onclick="sortByProfit()">利益順</button>
 
 <div id="list"></div>
 
@@ -672,40 +653,45 @@ const foods = [
 let filteredFoods=[...foods];
 const list=document.getElementById("list");
 
-// 時給計算
+// 利益
+function getProfit(f, star){
+  return f.prices[star] - f.cost;
+}
+
+// ランク
+function getRank(p){
+  if(p >= 1000) return "S";
+  if(p >= 500) return "A";
+  if(p >= 200) return "B";
+  return "C";
+}
+
+// 時給
 function calcHourly(f, star){
-  const price = f.prices[star];
-  const profit = price - f.cost;
-
-  if(!f.time || f.time <= 0) return 0;
-
-  return Math.round((profit / f.time) * 60);
+  if(!f.time) return 0;
+  return Math.round((getProfit(f,star)/f.time)*60);
 }
 
 // 描画
 function renderList(){
   list.innerHTML="";
   const star = document.getElementById("starSelect").value;
+  const showHourly = document.getElementById("toggleHourly").checked;
 
   filteredFoods.forEach((f,i)=>{
 
-    const price = f.prices[star];
-    const profit = price - f.cost;
-    const hourly = calcHourly(f, star);
-
-    // ★短時間は色付けしない
-    let colorClass = "";
-    if(f.time >= 30 && hourly > 1000){
-      colorClass = "high";
-    }
+    const profit = getProfit(f,star);
+    const rank = getRank(profit);
+    const hourly = calcHourly(f,star);
 
     list.innerHTML+=`
     <div class="card" onclick="toggleDetail(${i})">
       <img src="${f.image}">
       <div>
         <b>${f.name}</b><br>
-        利益:${profit}<br>
-        <span class="${colorClass}">時給:${hourly}</span>
+        利益：${profit}<br>
+        <span class="rank${rank}">ランク：${rank}</span><br>
+        ${showHourly ? `時給：${hourly}` : ""}
       </div>
     </div>
 
@@ -723,13 +709,9 @@ function renderList(){
 renderList();
 
 // ソート
-function sortByHourly(){
+function sortByProfit(){
   const star = document.getElementById("starSelect").value;
-
-  filteredFoods.sort((a,b)=>{
-    return calcHourly(b,star) - calcHourly(a,star);
-  });
-
+  filteredFoods.sort((a,b)=>getProfit(b,star)-getProfit(a,star));
   renderList();
 }
 
@@ -740,21 +722,8 @@ function toggleDetail(i){
 
 // 検索
 function filterFoods(){
-  const input=document.getElementById("search");
-  const keyword=input.value.toLowerCase();
-  const btn=document.querySelector(".clear-btn");
-
-  btn.style.display=keyword?"block":"none";
-
+  const keyword=document.getElementById("search").value.toLowerCase();
   filteredFoods=foods.filter(f=>f.name.toLowerCase().includes(keyword));
-  renderList();
-}
-
-// クリア
-function clearSearch(){
-  document.getElementById("search").value="";
-  filteredFoods=[...foods];
-  document.querySelector(".clear-btn").style.display="none";
   renderList();
 }
 
@@ -767,7 +736,7 @@ foods.forEach((f,i)=>{
   selectB.innerHTML+=`<option value="${i}">${f.name}</option>`;
 });
 
-// 比較
+// 比較（利益ベース）
 function compare(){
 
   const star = document.getElementById("starSelect").value;
@@ -775,16 +744,15 @@ function compare(){
   const a=foods[selectA.value];
   const b=foods[selectB.value];
 
-  const hourlyA = calcHourly(a,star);
-  const hourlyB = calcHourly(b,star);
+  const profitA = getProfit(a,star);
+  const profitB = getProfit(b,star);
 
-  let winner = hourlyA > hourlyB ? a.name : b.name;
+  let winner = profitA > profitB ? a.name : b.name;
 
   document.getElementById("compareResult").innerHTML=`
-  <div>
   🏆 ${winner}<br>
-  ${hourlyA} vs ${hourlyB}
-  </div>`;
+  ${profitA} vs ${profitB}
+  `;
 }
 
 </script>
