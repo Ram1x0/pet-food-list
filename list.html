@@ -237,13 +237,6 @@ function formatWeather(arr){
 
 // 表示
 function render(){
- const now=new Date();
- const zone=getZone();
- const weather=weatherData[zone];
-
- document.getElementById("time").innerText=now.toLocaleTimeString();
- document.getElementById("weather").innerText="天気："+weather;
-
  let list=creatures.filter(c=>
   c.weather.includes(weather)&&
   c.time.includes(zone)
@@ -283,6 +276,22 @@ function render(){
  });
 }
 
+let lastZone="";
+
+function updateTime(){
+ const now=new Date();
+ const zone=getZone();
+ const weather=weatherData[zone];
+
+ document.getElementById("time").innerText=now.toLocaleTimeString();
+ document.getElementById("weather").innerText="天気："+weather;
+
+ if(zone!==lastZone){
+  lastZone=zone;
+  render();
+ }
+}
+
 // フィルター
 function setFilter(t){
  currentFilter=t;
@@ -311,7 +320,9 @@ function closeModal(){
 
 // 初期化
 setFilter("all");
-setInterval(render,1000);
+render();
+updateTime();
+setInterval(updateTime,1000);
 </script>
 
 </body>
