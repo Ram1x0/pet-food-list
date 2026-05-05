@@ -237,6 +237,10 @@ function formatWeather(arr){
 
 // 表示
 function render(){
+
+ const zone=getZone();
+ const weather=weatherData[zone];
+
  let list=creatures.filter(c=>
   c.weather.includes(weather)&&
   c.time.includes(zone)
@@ -276,7 +280,7 @@ function render(){
  });
 }
 
-let lastZone="";
+let lastZone=getZone();
 
 function updateTime(){
  const now=new Date();
