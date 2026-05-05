@@ -241,6 +241,8 @@ function formatWeather(arr){
 // 表示
 function render(){
 
+ if(!currentWeather || !currentZone) return;
+
  let list=creatures.filter(c=>
   c.weather.includes(currentWeather)&&
   c.time.includes(currentZone)
@@ -327,9 +329,8 @@ function closeModal(){
 }
 
 // 初期化
-setFilter("all");
-updateTime();
-render();
+updateTime();        // ←先に状態作る
+setFilter("all");    // ←ここで初回render
 setInterval(updateTime,1000);
 </script>
 
