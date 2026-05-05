@@ -242,8 +242,8 @@ function formatWeather(arr){
 function render(){
 
  let list=creatures.filter(c=>
-  c.weather.includes(weather)&&
-  c.time.includes(zone)
+  c.weather.includes(currentWeather)&&
+  c.time.includes(currentZone)
  );
 
  // フィルター
