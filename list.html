@@ -200,6 +200,58 @@ function getZone(){
  return"0-6";
 }
 
+function formatTime(arr){
+  const order = ["6-12","12-18","18-24","0-6"];
+
+  // 全時間
+  if(arr.length === 4){
+    return "全時間";
+  }
+
+  const sorted = order.filter(o => arr.includes(o));
+
+  const ranges = [];
+  let start = null;
+  let prev = null;
+
+  sorted.forEach((zone, i) => {
+    const [s, e] = zone.split("-");
+
+    if(start === null){
+      start = s;
+      prev = e;
+      return;
+    }
+
+    if(prev === s){
+      prev = e;
+    }else{
+      ranges.push([start, prev]);
+      start = s;
+      prev = e;
+    }
+
+    if(i === sorted.length - 1){
+      ranges.push([start, prev]);
+    }
+  });
+
+  return ranges.map(([s,e])=>{
+    if(e === "24") e = "0";
+    return `${s}〜${e}`;
+  }).join(" / ");
+}
+
+function formatWeather(arr){
+  const all = ["晴れ","雨","虹"];
+
+  if(arr.length === all.length){
+    return "全天気";
+  }
+
+  return arr.join("・");
+}
+
 // 表示
 function render(){
  const now=new Date();
@@ -207,7 +259,6 @@ function render(){
  const weather=weatherData[zone];
 
  time.innerText=now.toLocaleTimeString();
- weatherEl=weather;
 
  document.getElementById("time").innerText=time.innerText;
  document.getElementById("weather").innerText="天気："+weather;
@@ -264,8 +315,8 @@ function openModal(c){
  m_name.innerText=c.name;
  m_img.src=c.img;
  m_loc.innerText=c.location;
- m_weather.innerText="天気："+c.weather.join(",");
- m_time.innerText="時間："+c.time.join(",");
+ m_weather.innerText="天気："+formatWeather(c.weather);
+ m_time.innerText="時間："+formatTime(c.time);
 }
 function closeModal(){
  modal.style.display="none";
