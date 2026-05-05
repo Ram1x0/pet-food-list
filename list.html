@@ -162,6 +162,9 @@ h1{
 <script>
 let currentFilter="all";
 
+let currentZone="";
+let currentWeather="";
+
 // 天気
 const weatherData={
  "6-12":"晴れ",
@@ -238,9 +241,6 @@ function formatWeather(arr){
 // 表示
 function render(){
 
- const zone=getZone();
- const weather=weatherData[zone];
-
  let list=creatures.filter(c=>
   c.weather.includes(weather)&&
   c.time.includes(zone)
@@ -287,11 +287,15 @@ function updateTime(){
  const zone=getZone();
  const weather=weatherData[zone];
 
+ /* ↓ ここ追加（重要） */
+ currentZone = zone;
+ currentWeather = weather;
+
  document.getElementById("time").innerText=now.toLocaleTimeString();
  document.getElementById("weather").innerText="天気："+weather;
 
  if(zone!==lastZone){
-  lastZone=zone;
+  lastZone = zone;
   render();
  }
 }
@@ -324,8 +328,8 @@ function closeModal(){
 
 // 初期化
 setFilter("all");
-render();
 updateTime();
+render();
 setInterval(updateTime,1000);
 </script>
 
