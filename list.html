@@ -6,7 +6,6 @@
 
 <title>かわいい図鑑ツール</title>
 
-<!-- モッチーポップ -->
 <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap" rel="stylesheet">
 
 <style>
@@ -54,6 +53,7 @@ h1{
   border:none;
   background:#f1f5f9;
   margin-bottom:8px;
+  box-sizing:border-box; /* はみ出し防止 */
 }
 
 /* フィルター */
@@ -75,10 +75,10 @@ h1{
   color:white;
 }
 
-/* グリッド */
+/* グリッド（4列） */
 .grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:8px;
   margin-top:10px;
 }
@@ -87,25 +87,24 @@ h1{
 .item{
   background:#f8fafc;
   border-radius:12px;
-  padding:6px;
+  padding:8px;
   text-align:center;
   font-size:12px;
   transition:0.2s;
 }
 
 .item:active{
-  transform:scale(0.9);
+  transform:scale(0.95);
 }
 
+/* 画像見やすく */
 .item img{
   width:100%;
-  height:60px;
+  height:70px;
   object-fit:contain;
-}
-
-/* レア */
-.rare{
-  border:2px solid #facc15;
+  background:white;
+  border-radius:8px;
+  padding:4px;
 }
 
 /* モーダル */
@@ -182,7 +181,7 @@ const creatures=[
  img:"images/048.PNG"
 },
 {
- name:"タラバガニ⭐",
+ name:"タラバガニ",
  type:"fish",
  weather:["虹"],
  time:["6-12","12-18","18-24","0-6"],
@@ -191,7 +190,7 @@ const creatures=[
 }
 ];
 
-// 時間
+// 時間帯取得
 function getZone(){
  const h=new Date().getHours();
  if(h>=6&&h<12)return"6-12";
@@ -200,56 +199,40 @@ function getZone(){
  return"0-6";
 }
 
+// フォーマット
 function formatTime(arr){
-  const order = ["6-12","12-18","18-24","0-6"];
+ const order=["6-12","12-18","18-24","0-6"];
+ if(arr.length===4)return"全時間";
 
-  // 全時間
-  if(arr.length === 4){
-    return "全時間";
+ const sorted=order.filter(o=>arr.includes(o));
+ const ranges=[];
+ let start=null,prev=null;
+
+ sorted.forEach((zone,i)=>{
+  const[s,e]=zone.split("-");
+  if(start===null){start=s;prev=e;return;}
+
+  if(prev===s){prev=e;}
+  else{
+   ranges.push([start,prev]);
+   start=s;prev=e;
   }
 
-  const sorted = order.filter(o => arr.includes(o));
+  if(i===sorted.length-1){
+   ranges.push([start,prev]);
+  }
+ });
 
-  const ranges = [];
-  let start = null;
-  let prev = null;
-
-  sorted.forEach((zone, i) => {
-    const [s, e] = zone.split("-");
-
-    if(start === null){
-      start = s;
-      prev = e;
-      return;
-    }
-
-    if(prev === s){
-      prev = e;
-    }else{
-      ranges.push([start, prev]);
-      start = s;
-      prev = e;
-    }
-
-    if(i === sorted.length - 1){
-      ranges.push([start, prev]);
-    }
-  });
-
-  return ranges.map(([s,e])=>{
-    if(e === "24") e = "0";
-    return `${s}〜${e}`;
-  }).join(" / ");
+ return ranges.map(([s,e])=>{
+  if(e==="24")e="0";
+  return `${s}〜${e}`;
+ }).join(" / ");
 }
 
 function formatWeather(arr){
-  const all = ["晴れ","雨","虹"];
-
-  if(arr.length === all.length){
-    return "全天気";
-  }
-
-  return arr.join("・");
+ const all=["晴れ","雨","虹"];
+ if(arr.length===all.length)return"全天気";
+ return arr.join("・");
 }
 
 // 表示
@@ -258,9 +241,7 @@ function render(){
  const zone=getZone();
  const weather=weatherData[zone];
 
- time.innerText=now.toLocaleTimeString();
-
- document.getElementById("time").innerText=time.innerText;
+ document.getElementById("time").innerText=now.toLocaleTimeString();
  document.getElementById("weather").innerText="天気："+weather;
 
  let list=creatures.filter(c=>
@@ -282,12 +263,18 @@ function render(){
  const el=document.getElementById("list");
  el.innerHTML="";
 
+ // 出現なし
+ if(list.length===0){
+  el.innerHTML="<p>出現なし</p>";
+  return;
+ }
+
  list.forEach(c=>{
   const div=document.createElement("div");
-  div.className="item"+(c.name.includes("⭐")?" rare":"");
+  div.className="item";
 
   div.innerHTML=`
-   <img src="${c.img}">
+   <img src="${c.img}" loading="lazy">
    <div>${c.name}</div>
   `;
 
@@ -322,6 +309,7 @@ function closeModal(){
  modal.style.display="none";
 }
 
+// 初期化
 setFilter("all");
 setInterval(render,1000);
 </script>
