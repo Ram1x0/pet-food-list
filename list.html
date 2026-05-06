@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="図鑑">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href="manifest.json">
 
 <title>かわいい図鑑ツール</title>
 
@@ -124,6 +129,17 @@ h1{
   border-radius:16px;
   text-align:center;
 }
+
+.sticky{
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: white; /* ←重要：透け防止 */
+}
+
+#list{
+  margin-top: 8px;
+}
 </style>
 </head>
 
@@ -149,8 +165,9 @@ h1{
     <button onclick="setWeatherMode('only')" id="w_only">今の天気でしか出現しない</button>
   </div>
 
-  <div id="list" class="grid"></div>
 </div>
+
+  <div id="list" class="grid"></div>
 
 <!-- モーダル -->
 <div id="modal" onclick="if(event.target.id==='modal')closeModal()">
