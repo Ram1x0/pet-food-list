@@ -243,10 +243,20 @@ function render(){
 
  if(!currentWeather || !currentZone) return;
 
- let list=creatures.filter(c=>
-  c.weather.includes(currentWeather)&&
-  c.time.includes(currentZone)
- );
+ let list = creatures.filter(c => {
+
+  // 全天気 or 一致
+  const weatherMatch =
+    c.weather.length === 3 || // ← 全天気
+    c.weather.includes(currentWeather);
+
+  // 全時間 or 一致
+  const timeMatch =
+    c.time.length === 4 || // ← 全時間
+    c.time.includes(currentZone);
+
+  return weatherMatch && timeMatch;
+});
 
  // フィルター
  if(currentFilter!=="all"){
