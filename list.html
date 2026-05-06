@@ -180,18 +180,593 @@ const ALL_TIME = ["6-12","12-18","18-24","0-6"];
 // 魚
 const fishData = [
 {
+ name:"ヨーロピアンパーチ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"川",
+ img:"fish/001.PNG"
+},
+{
+ name:"ヨーロッパトノサマガエル",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"湖",
+ img:"fish/002.PNG"
+},
+{
+ name:"チャブ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"湖",
+ img:"fish/003.PNG"
+},
+{
+ name:"シマドジョウ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"巨木の川",
+ img:"fish/004.PNG"
+},
+{
+ name:"バーベル",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"浅水川",
+ img:"fish/005.PNG"
+},
+{
+ name:"ダヌープストレバー",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"霞川",
+ img:"fish/006.PNG"
+},
+{
+ name:"ミノー",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"静川",
+ img:"fish/007.PNG"
+},
+{
+ name:"ティラピア",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"川(青魚影)",
+ img:"fish/008.PNG"
+},
+{
+ name:"テンチ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"森の湖",
+ img:"fish/009.PNG"
+},
+{
+ name:"ホワイトフィッシュ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"温泉山の湖",
+ img:"fish/010.PNG"
+},
+{
+ name:"マブナ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"郊外の湖",
+ img:"fish/011.PNG"
+},
+{
+ name:"ブリーク",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"湖",
+ img:"fish/012.PNG"
+},
+{
+ name:"シュナイダー",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"郊外の湖",
+ img:"fish/013.PNG"
+},
+{
+ name:"コウライエビ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"川",
+ img:"fish/014.PNG"
+},
+{
+ name:"ニシイワシ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"海",
+ img:"fish/015.PNG"
+},
+{
+ name:"スズキ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"海",
+ img:"fish/016.PNG"
+},
+{
+ name:"カツオ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"海",
+ img:"fish/017.PNG"
+},
+{
+ name:"タチウオ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"そよ風の海",
+ img:"fish/018.PNG"
+},
+{
+ name:"ウミエビ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"東海",
+ img:"fish/019.PNG"
+},
+{
  name:"マアジ",
  weather:["晴れ","雨","虹"],
  time:["6-12","12-18","18-24","0-6"],
- location:"🌊 海",
- img:"images/048.PNG"
+ location:"クジラ海",
+ img:"fish/020.PNG"
+},
+{
+ name:"カイブツギンザメ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"海(青魚影)",
+ img:"fish/021.PNG"
+},
+{
+ name:"ウミトゲウオ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"旧海",
+ img:"fish/022.PNG"
+},
+{
+ name:"ストライプトレッドマレット",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"海釣りクエスト(金魚影)",
+ img:"fish/023.PNG"
+},
+{
+ name:"イシドジョウ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"郊外の湖",
+ img:"fish/024.PNG"
+},
+{
+ name:"マッドサンフィッシュ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24"],
+ location:"森の湖",
+ img:"fish/025.PNG"
+},
+{
+ name:"キュウリウオ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"草原の湖",
+ img:"fish/026.PNG"
+},
+{
+ name:"ラッフ",
+ weather:["晴れ","雨","虹"],
+ time:["12-18","18-24"],
+ location:"温泉山の湖",
+ img:"fish/027.PNG"
+},
+{
+ name:"フランスアジ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"そよ風の海",
+ img:"fish/028.PNG"
+},
+{
+ name:"タツノオトシゴ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","0-6"],
+ location:"クジラ海",
+ img:"fish/029.PNG"
+},
+{
+ name:"アンコウ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"海釣りクエスト(金魚影)",
+ img:"fish/030.PNG"
+},
+{
+ name:"イガイ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"郊外の湖",
+ img:"fish/031.PNG"
+},
+{
+ name:"パイクパーチ",
+ weather:["晴れ","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"巨木の川",
+ img:"fish/032.PNG"
+},
+{
+ name:"オタマジャクシ",
+ weather:["雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"温泉山の湖",
+ img:"fish/033.PNG"
+},
+{
+ name:"北欧アカザエビ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","18-24","0-6"],
+ location:"森の湖",
+ img:"fish/034.PNG"
+},
+{
+ name:"マダコ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"海釣りクエスト(金魚影)",
+ img:"fish/035.PNG"
+},
+{
+ name:"タイセイヨウサケ",
+ weather:["晴れ","雨","虹"],
+ time:["12-18","18-24","0-6"],
+ location:"クジラ海",
+ img:"fish/036.PNG"
+},
+{
+ name:"ピグミータコ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"そよ風の海",
+ img:"fish/037.PNG"
+},
+{
+ name:"ヤドカリ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"東海",
+ img:"fish/038.PNG"
+},
+{
+ name:"カクレクマノミ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"旧海",
+ img:"fish/039.PNG"
+},
+{
+ name:"オオクチバス",
+ weather:["晴れ","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"森の湖",
+ img:"fish/040.PNG"
+},
+{
+ name:"ヨーロッパコイ",
+ weather:["晴れ","虹"],
+ time:["12-18","18-24"],
+ location:"霞川",
+ img:"fish/041.PNG"
+},
+{
+ name:"カワメンタイ",
+ weather:["晴れ","雨","虹"],
+ time:["12-18","18-24"],
+ location:"静川",
+ img:"fish/042.PNG"
+},
+{
+ name:"ハゼ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18"],
+ location:"東海",
+ img:"fish/043.PNG"
+},
+{
+ name:"サワガニ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"郊外の湖",
+ img:"fish/044.PNG"
+},
+{
+ name:"イシビラメ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"海釣りクエスト(金魚影)",
+ img:"fish/045.PNG"
+},
+{
+ name:"ヨーロッパヒラメ",
+ weather:["晴れ","雨","虹"],
+ time:["18-24","0-6"],
+ location:"旧海",
+ img:"fish/046.PNG"
+},
+{
+ name:"レッドベリーピラニア",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"巨木の川",
+ img:"fish/047.PNG"
+},
+{
+ name:"バタフライコイ",
+ weather:["雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"草原の湖",
+ img:"fish/048.PNG"
+},
+{
+ name:"カワギンポ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"霞川",
+ img:"fish/049.PNG"
+},
+{
+ name:"マス",
+ weather:["晴れ","虹"],
+ time:["18-24","0-6"],
+ location:"草原の湖",
+ img:"fish/050.PNG"
+},
+{
+ name:"ラッド",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"郊外の湖",
+ img:"fish/051.PNG"
+},
+{
+ name:"タイセイヨウサバ",
+ weather:["晴れ","虹"],
+ time:["12-18","18-24"],
+ location:"クジラ海",
+ img:"fish/052.PNG"
+},
+{
+ name:"ヨーロッパロブスター",
+ weather:["晴れ","雨","虹"],
+ time:["18-24","0-6"],
+ location:"そよ風の海",
+ img:"fish/053.PNG"
+},
+{
+ name:"ヨーロッパスルメイカ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"海釣りクエスト(金魚影)",
+ img:"fish/054.PNG"
+},
+{
+ name:"シンジュガイ",
+ weather:["虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"森の湖",
+ img:"fish/055.PNG"
+},
+{
+ name:"フグ",
+ weather:["晴れ","雨","虹"],
+ time:["12-18","18-24"],
+ location:"旧海",
+ img:"fish/056.PNG"
+},
+{
+ name:"シロザケ",
+ weather:["虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"静川",
+ img:"fish/057.PNG"
+},
+{
+ name:"カワヒメマス",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"郊外の湖",
+ img:"fish/058.PNG"
+},
+{
+ name:"タブ・ガーナード",
+ weather:["虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"東海",
+ img:"fish/059.PNG"
+},
+{
+ name:"ネコザメ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"海釣りクエスト(金魚影)",
+ img:"fish/060.PNG"
+},
+{
+ name:"イトヨ",
+ weather:["雨","虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"浅水川",
+ img:"fish/061.PNG"
+},
+{
+ name:"アプロケイルス",
+ weather:["晴れ","虹"],
+ time:["12-18","18-24","0-6"],
+ location:"郊外の湖",
+ img:"fish/062.PNG"
+},
+{
+ name:"カジカ",
+ weather:["雨","虹"],
+ time:["6-12","12-18","18-24"],
+ location:"温泉山の湖",
+ img:"fish/063.PNG"
+},
+{
+ name:"リュウグウノツカイ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","12-18"],
+ location:"海釣りクエスト(金魚影)",
+ img:"fish/064.PNG"
+},
+{
+ name:"スペインダイ",
+ weather:["雨","虹"],
+ time:["18-24","0-6"],
+ location:"そよ風の海",
+ img:"fish/065.PNG"
+},
+{
+ name:"ヨーロッパウナギ",
+ weather:["虹"],
+ time:["6-12","12-18","18-24"],
+ location:"旧海",
+ img:"fish/066.PNG"
+},
+{
+ name:"黄金タラバガニ",
+ weather:["虹"],
+ time:["6-12","12-18","18-24","0-6"],
+ location:"海釣りクエスト(金魚影)",
+ img:"fish/067.PNG"
+},
+{
+ name:"マッドミノー",
+ weather:["晴れ","虹"],
+ time:["6-12","0-6"],
+ location:"郊外の湖",
+ img:"fish/068.PNG"
+},
+{
+ name:"北欧ブルーアカザエビ",
+ weather:["晴れ","雨","虹"],
+ time:["18-24","0-6"],
+ location:"森の湖",
+ img:"fish/069.PNG"
+},
+{
+ name:"キンギョ",
+ weather:["雨","虹"],
+ time:["6-12","12-18","18-24"],
+ location:"草原の湖",
+ img:"fish/070.PNG"
 },
 {
  name:"タラバガニ",
  weather:["虹"],
- time:["6-12","12-18","18-24","0-6"],
- location:"🌊 沖釣り",
- img:"images/050.PNG"
+ time:["6-12","12-18","18-24"],
+ location:"クジラ海",
+ img:"fish/071.PNG"
+},
+{
+ name:"モンツキダラ",
+ weather:["晴れ","虹"],
+ time:["12-18","18-24","0-6"],
+ location:"東海",
+ img:"fish/072.PNG"
+},
+{
+ name:"ノーザンパイク",
+ weather:["雨","虹"],
+ time:["18-24","0-6"],
+ location:"郊外の湖",
+ img:"fish/073.PNG"
+},
+{
+ name:"パンプキンシード",
+ weather:["晴れ","虹"],
+ time:["6-12","12-18","18-24"],
+ location:"温泉山の湖",
+ img:"fish/074.PNG"
+},
+{
+ name:"ドナウイトウ",
+ weather:["虹"],
+ time:["12-18","18-24","0-6"],
+ location:"巨木の川",
+ img:"fish/075.PNG"
+},
+{
+ name:"ミナミマグロ",
+ weather:["虹"],
+ time:["6-12","12-18"],
+ location:"そよ風の海",
+ img:"fish/076.PNG"
+},
+{
+ name:"マンボウ",
+ weather:["晴れ","雨","虹"],
+ time:["6-12","0-6"],
+ location:"東海",
+ img:"fish/077.PNG"
+},
+{
+ name:"アカマンボウ",
+ weather:["晴れ","雨","虹"],
+ time:["18-24","0-6"],
+ location:"海釣りクエスト(金魚影)",
+ img:"fish/078.PNG"
+},
+{
+ name:"ヨーロッパナマズ",
+ weather:["晴れ","虹"],
+ time:["18-24","0-6"],
+ location:"草原の湖",
+ img:"fish/079.PNG"
+},
+{
+ name:"ブルーギル",
+ weather:["晴れ","虹"],
+ time:["18-24","0-6"],
+ location:"温泉山の湖",
+ img:"fish/080.PNG"
+},
+{
+ name:"ホッキョクイワナ",
+ weather:["雨","虹"],
+ time:["12-18","18-24"],
+ location:"森の湖",
+ img:"fish/081.PNG"
+},
+{
+ name:"メカジキ",
+ weather:["虹"],
+ time:["12-18","18-24"],
+ location:"クジラ海",
+ img:"fish/082.PNG"
+},
+
+{
+ name:"シュモクザメ",
+ weather:["虹"],
+ time:["18-24","0-6"],
+ location:"旧海",
+ img:"fish/083.PNG"
+},
+{
+ name:"アオザメ",
+ weather:["虹"],
+ time:["6-12","12-18"],
+ location:"海釣りクエスト(金魚影)",
+ img:"fish/084.PNG"
 }
 ].map(c => ({ ...c, type:"fish" }));
 
