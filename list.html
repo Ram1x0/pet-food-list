@@ -970,14 +970,16 @@ function updateTime(){
  const todayKey = getDateKey(0);
  const tomorrowKey = getDateKey(1);
 
- // 今日の天気
  const todayWeather = weatherData[todayKey] || {};
  const weather = todayWeather[zone] || "不明";
+
+ // ここで変化チェック
+ const changed = (zone !== currentZone) || (weather !== currentWeather);
 
  currentZone = zone;
  currentWeather = weather;
 
- // 次の時間帯
+ // 次の天気（そのままでOK）
  const zones = ["6-12","12-18","18-24","0-6"];
  const nextIndex = (zones.indexOf(zone)+1) % 4;
  const nextZone = zones[nextIndex];
@@ -985,7 +987,6 @@ function updateTime(){
  let nextWeather;
 
  if(nextZone === "0-6"){
-   // 日付跨ぐ
    const tomorrowWeather = weatherData[tomorrowKey] || {};
    nextWeather = tomorrowWeather[nextZone] || "不明";
  }else{
@@ -993,18 +994,24 @@ function updateTime(){
  }
 
  document.getElementById("time").innerText = now.toLocaleTimeString();
-
  document.getElementById("weather").innerText =
    `今：${weather} / 次：${nextWeather}`;
 
- render();
+ // 👇 変化した時だけrender
+ if(changed){
+   render();
+ }
 }
 
-  
 // 今日の日付取得
 function getDateKey(offset=0){
   const d = new Date();
+
+  // JSTに補正（+9時間）
+  d.setHours(d.getHours() + 9);
+
   d.setDate(d.getDate() + offset);
+
   return d.toISOString().slice(0,10);
 }
   
