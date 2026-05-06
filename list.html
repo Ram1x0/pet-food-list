@@ -177,10 +177,10 @@ const ALL_WEATHER = ["晴れ","雨","虹"];
 const ALL_TIME = ["6-12","12-18","18-24","0-6"];
 
 // データ
-const creatures=[
+// 魚
+const fishData = [
 {
  name:"マアジ",
- type:"fish",
  weather:["晴れ","雨","虹"],
  time:["6-12","12-18","18-24","0-6"],
  location:"🌊 海",
@@ -188,12 +188,28 @@ const creatures=[
 },
 {
  name:"タラバガニ",
- type:"fish",
  weather:["虹"],
  time:["6-12","12-18","18-24","0-6"],
  location:"🌊 沖釣り",
  img:"images/050.PNG"
 }
+].map(c => ({ ...c, type:"fish" }));
+
+// 虫
+const bugData = [
+ // ここに追加していく
+].map(c => ({ ...c, type:"bug" }));
+
+// 野鳥
+const birdData = [
+ // ここに追加していく
+].map(c => ({ ...c, type:"bird" }));
+
+// 最後にまとめる（超重要）
+const creatures = [
+ ...fishData,
+ ...bugData,
+ ...birdData
 ];
 
 // 時間帯取得
