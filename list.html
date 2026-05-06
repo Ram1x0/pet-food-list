@@ -112,6 +112,18 @@ h1{
   padding:4px;
 }
 
+/* 検索バーバツボタン */
+#clearBtn{
+  position:absolute;
+  right:8px;
+  top:50%;
+  transform:translateY(-50%);
+  border:none;
+  background:transparent;
+  font-size:18px;
+  display:none; /* 最初は非表示 */
+}
+
 /* モーダル */
 #modal{
   display:none;
@@ -151,7 +163,10 @@ h1{
   <div id="time" class="time"></div>
   <div id="weather" class="weather"></div>
 
+<div style="position:relative;">
   <input type="text" id="search" class="search" placeholder="🔍 名前で検索">
+  <button id="clearBtn">×</button>
+</div>
 
   <div class="filter">
     <button onclick="setFilter('all')" id="f_all">全部</button>
@@ -191,11 +206,19 @@ let currentZone="";
 let currentWeather="";
 
 // 天気(毎日入力する) 
-const weatherData={
- "6-12":"晴れ",
- "12-18":"雨",
- "18-24":"虹",
- "0-6":"虹"
+const weatherData = {
+ "2026-05-07": {
+   "6-12":"晴れ",
+   "12-18":"晴れ",
+   "18-24":"晴れ",
+   "0-6":"晴れ"
+ },
+ "2026-05-08": {
+   "6-12":"不明",
+   "12-18":"不明",
+   "18-24":"不明",
+   "0-6":"晴れ"
+ }
 };
 
 const ALL_WEATHER = ["晴れ","雨","虹"];
@@ -857,6 +880,22 @@ function formatWeather(arr){
  return arr.join("・");
 }
 
+const searchInput = document.getElementById("search");
+const clearBtn = document.getElementById("clearBtn");
+
+// 入力時
+searchInput.addEventListener("input", ()=>{
+  clearBtn.style.display = searchInput.value ? "block" : "none";
+  render();
+});
+
+// ×ボタン
+clearBtn.onclick = ()=>{
+  searchInput.value = "";
+  clearBtn.style.display = "none";
+  render();
+};
+
 // 表示
 function render(){
 
@@ -925,23 +964,50 @@ function render(){
 let lastZone=getZone();
 
 function updateTime(){
- const now=new Date();
- const zone=getZone();
- const weather=weatherData[zone];
+ const now = new Date();
+ const zone = getZone();
 
- /* ↓ ここ追加（重要） */
+ const todayKey = getDateKey(0);
+ const tomorrowKey = getDateKey(1);
+
+ // 今日の天気
+ const todayWeather = weatherData[todayKey] || {};
+ const weather = todayWeather[zone] || "不明";
+
  currentZone = zone;
  currentWeather = weather;
 
- document.getElementById("time").innerText=now.toLocaleTimeString();
- document.getElementById("weather").innerText="天気："+weather;
+ // 次の時間帯
+ const zones = ["6-12","12-18","18-24","0-6"];
+ const nextIndex = (zones.indexOf(zone)+1) % 4;
+ const nextZone = zones[nextIndex];
 
- if(zone!==lastZone){
-  lastZone = zone;
-  render();
+ let nextWeather;
+
+ if(nextZone === "0-6"){
+   // 日付跨ぐ
+   const tomorrowWeather = weatherData[tomorrowKey] || {};
+   nextWeather = tomorrowWeather[nextZone] || "不明";
+ }else{
+   nextWeather = todayWeather[nextZone] || "不明";
  }
+
+ document.getElementById("time").innerText = now.toLocaleTimeString();
+
+ document.getElementById("weather").innerText =
+   `今：${weather} / 次：${nextWeather}`;
+
+ render();
 }
 
+  
+// 今日の日付取得
+function getDateKey(offset=0){
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return d.toISOString().slice(0,10);
+}
+  
 // 切替関数
 function setWeatherMode(mode){
   weatherMode = mode;
