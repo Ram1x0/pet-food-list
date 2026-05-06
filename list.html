@@ -144,6 +144,11 @@ h1{
     <button onclick="setFilter('bird')" id="f_bird">野鳥</button>
   </div>
 
+  <div class="filter" style="margin-top:6px;">
+    <button onclick="setWeatherMode('current')" id="w_current">今の天気</button>
+    <button onclick="setWeatherMode('only')" id="w_only">専用</button>
+  </div>
+
   <div id="list" class="grid"></div>
 </div>
 
@@ -161,11 +166,14 @@ h1{
 
 <script>
 let currentFilter="all";
+let weatherMode = "current"; 
+// "current" = 今の天気で出るやつ全部
+// "only" = 今の天気でしか出ないやつ
 
 let currentZone="";
 let currentWeather="";
 
-// 天気
+// 天気(毎日入力する) 
 const weatherData={
  "6-12":"晴れ",
  "12-18":"雨",
@@ -840,9 +848,20 @@ function render(){
  let list = creatures.filter(c => {
 
   // 全天気 or 一致
-  const weatherMatch =
+  let weatherMatch = false;
+
+  if(weatherMode === "current"){
+  // 今の天気で出るやつ全部（全天気含む）
+  weatherMatch =
     c.weather.length === ALL_WEATHER.length ||
     c.weather.includes(currentWeather);
+
+  }else if(weatherMode === "only"){
+  // 今の天気でしか出ないやつ
+  weatherMatch =
+    c.weather.length === 1 &&
+    c.weather[0] === currentWeather;
+}
 
   // 全時間 or 一致
   const timeMatch =
@@ -906,6 +925,19 @@ function updateTime(){
  }
 }
 
+// 切替関数
+function setWeatherMode(mode){
+  weatherMode = mode;
+
+  ["current","only"].forEach(x=>{
+    document.getElementById("w_"+x).classList.remove("active");
+  });
+
+  document.getElementById("w_"+mode).classList.add("active");
+
+  render();
+}
+
 // フィルター
 function setFilter(t){
  currentFilter=t;
@@ -936,6 +968,7 @@ function closeModal(){
 updateTime();        // ←先に状態作る
 setFilter("all");    // ←ここで初回render
 setInterval(updateTime,1000);
+setWeatherMode("current");
 </script>
 
 </body>
