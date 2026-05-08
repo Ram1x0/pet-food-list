@@ -449,6 +449,7 @@ h1{
   <div class="filter" style="margin-top:6px;">
     <button onclick="setWeatherMode('current')" id="w_current">今出現するもの全て</button>
     <button onclick="setWeatherMode('only')" id="w_only">今の天気でしか出現しない</button>
+    <button onclick="setWeatherMode('hidden')" id="hidden">今は出現しない</button>
   </div>
 
 </div>
@@ -478,17 +479,17 @@ let currentWeather="";
 
 // 天気(毎日入力する) 
 const weatherData = {
- "2026-05-07": {
+ "2026-05-08": {
+   "6-12":"晴れ",
+   "12-18":"晴れ",
+   "18-24":"雨",
+   "0-6":"晴れ"
+ },
+ "2026-05-09": {
    "6-12":"晴れ",
    "12-18":"晴れ",
    "18-24":"晴れ",
    "0-6":"晴れ"
- },
- "2026-05-08": {
-   "6-12":"雨",
-   "12-18":"晴れ",
-   "18-24":"雨",
-   "0-6":"虹"
  }
 };
 
@@ -2075,16 +2076,27 @@ function render(){
   let weatherMatch = false;
 
   if(weatherMode === "current"){
-  // 今の天気で出るやつ全部（全天気含む）
+
+  // 今出現するもの全て
   weatherMatch =
     c.weather.length === ALL_WEATHER.length ||
     c.weather.includes(currentWeather);
 
-  }else if(weatherMode === "only"){
-  // 今の天気でしか出ないやつ
+}else if(weatherMode === "only"){
+
+  // 今の天気限定
   weatherMatch =
     c.weather.length === 1 &&
     c.weather[0] === currentWeather;
+
+}else if(weatherMode === "hidden"){
+
+  // 今は出現しない
+  weatherMatch =
+    !(
+      c.weather.length === ALL_WEATHER.length ||
+      c.weather.includes(currentWeather)
+    );
 }
 
   // 全時間 or 一致
@@ -2187,7 +2199,7 @@ function getDateKey(offset=0){
 function setWeatherMode(mode){
   weatherMode = mode;
 
-  ["current","only"].forEach(x=>{
+  ["current","only","hidden"].forEach(x=>{
     document.getElementById("w_"+x).classList.remove("active");
   });
 
