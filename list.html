@@ -172,6 +172,58 @@ h1{
   font-size:13px;
 }
 
+  /* 画像ラッパー */
+.img-wrap{
+
+  position:relative;
+
+  width:100%;
+}
+
+/* レベル表示 */
+.level-badge{
+
+  position:absolute;
+
+  top:6px;
+  left:6px;
+
+  z-index:5;
+
+  padding:3px 8px;
+
+  border-radius:999px;
+
+  font-size:10px;
+
+  color:white;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,0.7) 0%,
+      rgba(0,0,0,0.5) 100%
+    );
+
+  backdrop-filter:blur(4px);
+
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* 名前 */
+.item-name{
+
+  height:34px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  line-height:1.2;
+}
+
 /* ×ボタン */
 #clearBtn{
   position:absolute;
@@ -2136,9 +2188,22 @@ function render(){
   div.className="item";
 
   div.innerHTML=`
-   <img src="${c.img}" loading="lazy">
-   <div>${c.name}</div>
-  `;
+
+  <div class="img-wrap">
+
+    <div class="level-badge">
+      Lv.${c.level ?? "-"}
+    </div>
+
+    <img src="${c.img}" loading="lazy">
+
+  </div>
+
+  <div class="item-name">
+    ${c.name}
+  </div>
+
+`;
 
   div.onclick=()=>openModal(c);
   el.appendChild(div);
