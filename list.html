@@ -343,7 +343,8 @@ h1{
 .item img{
 
   width:100%;
-  height:90px;
+
+  aspect-ratio:1/1;
 
   object-fit:contain;
 
@@ -358,11 +359,15 @@ h1{
 
   padding:2px;
 
+  box-sizing:border-box;
+
   box-shadow:
     inset 0 2px 5px rgba(255,255,255,0.95),
     inset 0 -2px 5px rgba(0,0,0,0.05);
 
   margin-bottom:6px;
+
+  display:block;
 }
 
 /* モーダル */
