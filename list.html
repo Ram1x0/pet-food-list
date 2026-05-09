@@ -508,6 +508,11 @@ h1{
     <button onclick="setWeatherMode('hidden')" id="w_hidden">今は出現しない</button>
   </div>
 
+  <div class="filter" style="margin-top:6px;">
+    <button onclick="setSort('book')" id="s_book">図鑑順</button>
+    <button onclick="setSort('level')" id="s_level">レベル順</button>
+  </div>
+
 </div>
 
   <div id="list" class="grid"></div>
@@ -526,6 +531,7 @@ h1{
 
 <script>
 let currentFilter="all";
+let currentSort = "book";
 let weatherMode = "current"; 
 // "current" = 今の天気で出るやつ全部
 // "only" = 今の天気でしか出ないやつ
@@ -2398,7 +2404,7 @@ function render(){
       Lv.${c.level ?? "-"}
     </div>
 
-    <img src="${c.img}" loading="lazy">
+    <img src="${c.img}" loading="lazy" decoding="async">
 
   </div>
 
@@ -2490,6 +2496,15 @@ function setFilter(t){
  render();
 }
 
+function setSort(type){
+  currentSort = type;
+  ["book","level"].forEach(x=>{
+    document.getElementById("s_"+x).classList.remove("active");
+  });
+  document.getElementById("s_"+type).classList.add("active");
+  render();
+}
+
 // 検索
 document.getElementById("search").addEventListener("input",render);
 
@@ -2509,6 +2524,7 @@ function closeModal(){
 // 初期化
 updateTime();        // ←先に状態作る
 setFilter("all");    // ←ここで初回render
+setSort("book");
 setInterval(updateTime,1000);
 setWeatherMode("current");
 </script>
