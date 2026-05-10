@@ -529,7 +529,35 @@ h1{
   </div>
 </div>
 
+<div style="font-size:12px; padding:10px; opacity:0.8;">
+
+<h3>プライバシーポリシー</h3>
+<p>
+本サイトではデータはブラウザ内（LocalStorage）のみで管理され、
+外部に送信されることはありません。
+</p>
+
+<h3>お問い合わせ</h3>
+<p>
+X（旧Twitter）：
+<a href="https://x.com/_ram1x?s=21" target="_blank">
+  @_Ram1x
+</a>
+</p>
+
+<p id="disclaimer" style="font-size:10px; opacity:0.5; text-align:center; margin-top:20px;">
+</p>
+
+<div style="display:flex; justify-content:flex-end;">
+  <p id="version" style="font-size:10px; opacity:0.4;">
+  </p>
+ </div>
+</div>
+
 <script>
+
+const APP_VERSION = "1.0.1";
+
 let currentFilter="all";
 let currentSort = "book";
 let weatherMode = "current"; 
@@ -2564,6 +2592,12 @@ setFilter("all");    // ←ここで初回render
 setSort("book");
 setInterval(updateTime,1000);
 setWeatherMode("current");
+
+document.getElementById("version").textContent =
+  "Ver " + APP_VERSION;
+
+document.getElementById("disclaimer").textContent =
+  "本サイトは非公式ファンサイトです。ゲーム運営会社様とは関係ありません。";
 </script>
 
 </body>
