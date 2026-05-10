@@ -2390,21 +2390,27 @@ function render(){
   list=list.filter(c=>c.type===currentFilter);
  }
 
- // ソート
+  // ソート
  if(currentSort === "level"){
   list.sort((a,b)=>{
     // 種類順
     const typeOrder = {
-      fish:0,
-      bug:1,
-      bird:2
+      fish: 0,
+      bug: 1,
+      bird: 2
     };
-    // レベル順
+    // 先に種類を比較
+    if(typeOrder[a.type] !== typeOrder[b.type]){
+      return typeOrder[a.type] - typeOrder[b.type];
+    }
+    // 次にレベル順
     if(a.level !== b.level){
       return a.level - b.level;
     }
+
     // 同レベルなら図鑑順
     return a.bookIndex - b.bookIndex;
+
   });
 }
 
