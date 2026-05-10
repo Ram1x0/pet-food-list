@@ -1234,7 +1234,12 @@ const fishData = [
  location:"海釣りクエスト(金魚影)",
  img:"fish/084.PNG"
 }
-].map(c => ({ ...c, type:"fish" }));
+  // ここに追加していく
+].map((c,i) => ({
+  ...c,
+  type:"fish",
+  bookIndex:i
+}));
 
 // 虫
 const bugData = [
@@ -1751,7 +1756,11 @@ const bugData = [
  img:"bugs/064.PNG"
 }
  // ここに追加していく
-].map(c => ({ ...c, type:"bug" }));
+].map((c,i) => ({
+  ...c,
+  type:"bug",
+  bookIndex:i
+}));
 
 // 野鳥
 const birdData = [
@@ -2260,7 +2269,11 @@ const birdData = [
  img:"birds/063.PNG"
 }
  // ここに追加していく
-].map(c => ({ ...c, type:"bird" }));
+].map((c,i) => ({
+  ...c,
+  type:"bird",
+  bookIndex:i
+}));
 
 // 最後にまとめる（超重要）
 const creatures = [
@@ -2376,6 +2389,24 @@ function render(){
  if(currentFilter!=="all"){
   list=list.filter(c=>c.type===currentFilter);
  }
+
+ // ソート
+ if(currentSort === "level"){
+  list.sort((a,b)=>{
+    // 種類順
+    const typeOrder = {
+      fish:0,
+      bug:1,
+      bird:2
+    };
+    // レベル順
+    if(a.level !== b.level){
+      return a.level - b.level;
+    }
+    // 同レベルなら図鑑順
+    return a.bookIndex - b.bookIndex;
+  });
+}
 
  // 検索
  const keyword=document.getElementById("search").value;
