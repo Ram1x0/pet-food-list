@@ -283,6 +283,48 @@ h1{
   color:#475569;
 }
 
+/* 天気全体 */
+.weather-wrap{
+
+  display:flex;
+
+  justify-content:center;
+  align-items:flex-end;
+
+  gap:8px;
+
+  margin-bottom:8px;
+}
+
+/* 今の天気 */
+.weather-now{
+
+  font-size:18px;
+
+  color:#475569;
+}
+
+/* 次の天気 */
+.weather-next{
+
+  font-size:11px;
+
+  opacity:0.7;
+
+  color:#64748b;
+
+  margin-bottom:2px;
+}
+
+/* ダークモード */
+body.dark .weather-now{
+  color:#e2e8f0;
+}
+
+body.dark .weather-next{
+  color:#94a3b8;
+}
+
 /* 時間 */
 .time{
   text-align:center;
@@ -624,7 +666,10 @@ h1{
 
 <div class="card sticky">
   <div id="time" class="time"></div>
-  <div id="weather" class="weather"></div>
+  <div class="weather-wrap">
+  <div id="weatherNow" class="weather-now"></div>
+  <div id="weatherNext" class="weather-next"></div>
+</div>
 
 <div style="position:relative;">
   <input type="text" id="search" class="search" placeholder="🔍 名前で検索">
@@ -2660,8 +2705,10 @@ function updateTime(){
  }
 
  document.getElementById("time").innerText = now.toLocaleTimeString();
- document.getElementById("weather").innerText =
-   `今：${weather} / 次：${nextWeather}`;
+ document.getElementById("weatherNow").innerText =
+  `今 ${weather}`;
+ document.getElementById("weatherNext").innerText =
+  `次：${nextWeather}`;
 
  // 👇 変化した時だけrender
  if(changed){
