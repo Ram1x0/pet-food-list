@@ -479,12 +479,57 @@ h1{
     inset 0 2px 5px rgba(255,255,255,0.9),
     inset 0 -2px 5px rgba(0,0,0,0.05);
 }
+
+/* ダークモードボタン */
+.title-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+
+#themeToggle{
+  border:none;
+  background:none;
+  font-size:20px;
+  cursor:pointer;
+}
+
+body.dark-mode{
+  background:#111;
+  color:#eee;
+}
+
+body.dark-mode .card{
+  background:#1b1b1b;
+  border-color:#333;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode button{
+  background:#222;
+  color:#fff;
+  border-color:#444;
+}
+
+body.dark-mode a{
+  color:#7dcfff;
+}
 </style>
 </head>
 
 <body>
 
-<h1>🎀 出現図鑑</h1>
+<<div class="title-row">
+
+  <h1>🔎出現図鑑🔎</h1>
+
+  <button id="themeToggle">
+    🌙
+  </button>
+  
+</div>
 
 <div class="card sticky">
   <div id="time" class="time"></div>
@@ -548,9 +593,16 @@ X（旧Twitter）：
 <p id="disclaimer" style="font-size:10px; opacity:0.5; text-align:center; margin-top:20px;">
 </p>
 
-<div style="display:flex; justify-content:flex-end;">
-  <p id="version" style="font-size:10px; opacity:0.4;">
-  </p>
+<div style="
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  font-size:10px;
+  opacity:0.4;
+  margin-top:20px;
+">
+  <p id="lastUpdate"></p>
+  <p id="version"></p>
  </div>
 </div>
 
@@ -2573,6 +2625,51 @@ function setSort(type){
 // 検索
 document.getElementById("search").addEventListener("input",render);
 
+// ダークモード
+const themeToggle =
+  document.getElementById("themeToggle");
+
+// 保存済みテーマ取得
+let savedTheme =
+  localStorage.getItem("theme");
+
+// 保存が無ければ端末設定を見る
+if(!savedTheme){
+
+  const prefersDark =
+    window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+  savedTheme = prefersDark ? "dark" : "light";
+}
+
+// 初期適用
+if(savedTheme === "dark"){
+  document.body.classList.add("dark-mode");
+  themeToggle.textContent = "☀️";
+}else{
+  themeToggle.textContent = "🌙";
+}
+
+// ボタン切替
+themeToggle.addEventListener("click",()=>{
+
+  document.body.classList.toggle("dark-mode");
+
+  const isDark =
+    document.body.classList.contains("dark-mode");
+
+  if(isDark){
+    localStorage.setItem("theme","dark");
+    themeToggle.textContent = "☀️";
+  }else{
+    localStorage.setItem("theme","light");
+    themeToggle.textContent = "🌙";
+  }
+
+});
+
 // モーダル
 function openModal(c){
  modal.style.display="block";
@@ -2598,6 +2695,9 @@ document.getElementById("version").textContent =
 
 document.getElementById("disclaimer").textContent =
   "※本ツールは個人が制作し非公式のものです。ゲーム公式とは一切関係ありません。";
+
+document.getElementById("lastUpdate").textContent =
+  "最終更新 2026/05/10";
 </script>
 
 </body>
