@@ -71,6 +71,150 @@ body::after{
   z-index:-1;
 }
 
+/* ダークモード */
+body.dark{
+
+  background:
+    linear-gradient(
+      180deg,
+      #1e293b 0%,
+      #0f172a 100%
+    );
+
+  color:#e2e8f0;
+}
+
+/* タイトルエリア */
+.title-bar{
+
+  position:relative;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  margin-bottom:10px;
+}
+
+/* タイトル */
+.title-bar h1{
+  margin:0 auto;
+}
+
+/* ダークモードボタン */
+#darkToggle{
+
+  position:absolute;
+  right:0;
+
+  border:none;
+
+  border-radius:999px;
+
+  padding:8px 14px;
+
+  font-size:11px;
+
+  font-family:'Mochiy Pop One', sans-serif;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #edf5ff 100%
+    );
+
+  color:#334155;
+
+  box-shadow:
+    0 5px 12px rgba(0,0,0,0.08),
+    inset 0 2px 5px rgba(255,255,255,0.9);
+
+  transition:0.2s;
+}
+
+#darkToggle:active{
+  transform:scale(0.96);
+}
+
+/* ダーク時カード */
+body.dark .card,
+body.dark .item,
+body.dark .modal-box,
+body.dark .sticky{
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(30,41,59,0.96) 0%,
+      rgba(15,23,42,0.96) 100%
+    );
+
+  color:#e2e8f0;
+
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+/* ダーク時画像背景 */
+body.dark .item img,
+body.dark .modal-box img{
+
+  background:
+    linear-gradient(
+      180deg,
+      #334155 0%,
+      #1e293b 100%
+    );
+}
+
+/* ダーク時入力 */
+body.dark .search{
+
+  background:
+    linear-gradient(
+      180deg,
+      #334155 0%,
+      #1e293b 100%
+    );
+
+  color:white;
+}
+
+/* ダーク時ボタン */
+body.dark .filter button,
+body.dark .modal-box button,
+body.dark #darkToggle{
+
+  background:
+    linear-gradient(
+      180deg,
+      #334155 0%,
+      #1e293b 100%
+    );
+
+  color:white;
+}
+
+/* ダーク時ONボタン */
+body.dark .active{
+
+  background:
+    linear-gradient(
+      180deg,
+      #38bdf8 0%,
+      #0ea5e9 100%
+    ) !important;
+}
+
+/* ダーク時文字 */
+body.dark .weather,
+body.dark .time,
+body.dark a,
+body.dark p,
+body.dark h3{
+  color:#e2e8f0;
+}
+
 /* タイトル */
 h1{
   text-align:center;
@@ -483,7 +627,15 @@ h1{
 </head>
 
 <body>
-<h1>🔎出現図鑑🔎</h1>
+<div class="title-bar">
+
+  <h1>🔎出現図鑑🔎</h1>
+
+  <button id="darkToggle">
+    🌙
+  </button>
+
+</div>
 
 <div class="card sticky">
   <div id="time" class="time"></div>
@@ -2579,6 +2731,50 @@ function setSort(type){
 // 検索
 document.getElementById("search").addEventListener("input",render);
 
+// ダークモード
+const darkToggle = document.getElementById("darkToggle");
+
+// 保存確認
+const savedDark = localStorage.getItem("darkMode");
+
+// 初回
+if(savedDark === "true"){
+
+  document.body.classList.add("dark");
+
+}else if(savedDark === null){
+
+  // 端末設定
+  if(window.matchMedia("(prefers-color-scheme: dark)").matches){
+    document.body.classList.add("dark");
+  }
+
+}
+
+// ボタン
+updateDarkButton();
+
+darkToggle.onclick = ()=>{
+
+  document.body.classList.toggle("dark");
+
+  localStorage.setItem(
+    "darkMode",
+    document.body.classList.contains("dark")
+  );
+
+  updateDarkButton();
+};
+
+// ボタン表示
+function updateDarkButton(){
+
+  darkToggle.textContent =
+    document.body.classList.contains("dark")
+    ? "☀️"
+    : "🌙";
+}
+
 // モーダル
 function openModal(c){
  modal.style.display="block";
@@ -2603,7 +2799,7 @@ document.getElementById("version").textContent =
   "Ver " + APP_VERSION;
 
 document.getElementById("disclaimer").textContent =
-  "※本ツールは個人が制作し非公式のものです。ゲーム公式とは一切関係ありません。";
+  "※本ツールは個人が制作した非公式のものです。ゲーム公式とは一切関係ありません。";
 
 document.getElementById("lastUpdate").textContent =
   "最終更新 2026/05/10";
