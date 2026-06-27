@@ -539,6 +539,7 @@ body.dark .dislikeBtn {
   <button id="soundBtn" onclick="toggleSound()">🔊 ON</button>
   <button onclick="openHelp()" id="helpBtn"></button>
   <button id="darkBtn" onclick="toggleDark()">🌙</button>
+  <button onclick="openDataModal()">💾 データ管理</button>
 </div>
 
 <input type="file" id="hiddenUpload" accept="image/*" style="display:none;">
@@ -591,6 +592,24 @@ X（旧Twitter）：
 <div style="display:flex; justify-content:flex-end;">
   <p id="version" style="font-size:10px; opacity:0.4;">
   </p>
+</div>
+
+  <div id="dataModal" class="modal">
+  <div class="modalContent">
+
+    <button class="closeBtn" onclick="closeDataModal()">❌</button>
+
+    <h2>データ管理</h2>
+
+    <p>
+      新しい「はとぴ図鑑」にデータを移行できます。
+    </p>
+
+    <button onclick="exportBackup()">
+      📤 バックアップを書き出す
+    </button>
+
+  </div>
 </div>
   
 </div>
@@ -1645,8 +1664,67 @@ if (savedLang) {
     }, 300);
   }
 });
+
+function openDataModal() {
+  document.getElementById("dataModal").style.display = "flex";
+}
+
+function closeDataModal() {
+  document.getElementById("dataModal").style.display = "none";
+}
+
+function exportBackup() {
+
+  const backup = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    pets: pets,
+    data: {}
+  };
+
+  pets.forEach(pet => {
+
+    const foods =
+      pet.type === "dog"
+        ? dogFoods
+        : catFoods;
+
+    for (let i = 0; i < foods.length; i++) {
+
+      const key = `pet_${pet.id}_${pet.type}_${i}`;
+
+      const value = localStorage.getItem(key);
+
+      if (value) {
+        backup.data[key] = JSON.parse(value);
+      }
+
+    }
+
+  });
+
+  const blob = new Blob(
+    [JSON.stringify(backup, null, 2)],
+    {
+      type: "application/json"
+    }
+  );
+
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+
+  a.href = url;
+  a.download = "heartopia-pet-backup.json";
+
+  a.click();
+
+  URL.revokeObjectURL(url);
+
+}
   
 </script>
+
 
 </body>
 </html>
