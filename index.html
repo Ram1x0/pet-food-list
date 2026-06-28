@@ -496,6 +496,230 @@ body.dark .dislikeBtn {
 </head>
 
 <body>
+  
+<!-- =====================================================
+  【追加場所】heartopia-petfood.com の index.html
+  既存の <div id="langModal"> の直前に貼り付け
+====================================================== -->
+
+<style>
+@keyframes mpopIn {
+  from { transform: scale(0.88); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+#migrationPopup .mpop-box {
+  animation: mpopIn 0.3s ease;
+}
+</style>
+
+<!-- 移行案内ポップアップ -->
+<div id="migrationPopup" style="
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+  z-index: 5000;
+  overflow-y: auto;
+">
+  <div class="mpop-box" style="
+    width: 90%;
+    max-width: 340px;
+    margin: 50px auto 30px;
+    background: #fffdf7;
+    border: 1px solid #c8a86b;
+    border-radius: 22px;
+    padding: 22px 20px 24px;
+    box-shadow: 0 20px 40px rgba(52,48,43,0.2);
+    font-family: 'Zen Maru Gothic', sans-serif;
+    color: #34302b;
+  ">
+
+    <!-- タイトル -->
+    <div style="text-align: center; margin-bottom: 16px;">
+      <div style="font-size: 28px; margin-bottom: 6px;">🏡</div>
+      <div style="
+        font-family: 'Shippori Mincho', serif;
+        font-size: 17px;
+        font-weight: 700;
+        color: #3c5a6e;
+        letter-spacing: 0.1em;
+      ">はとぴ図鑑へ移行しました</div>
+      <div style="font-size: 11px; color: #7a7164; margin-top: 4px;">
+        ペットエサ管理は新サイトに統合されました
+      </div>
+    </div>
+
+    <!-- 新サイトリンク（上部） -->
+    <a href="https://ram1x7.github.io/heartopilist/pet.html"
+       style="
+         display: block;
+         background: #3c5a6e;
+         color: #fdf9ef;
+         text-align: center;
+         padding: 12px;
+         border-radius: 999px;
+         font-size: 13px;
+         font-weight: 700;
+         text-decoration: none;
+         margin-bottom: 16px;
+         letter-spacing: 0.05em;
+       ">
+      🐾 新サイトを開く →
+    </a>
+
+    <hr style="border: none; border-top: 1px solid #e4d9c2; margin-bottom: 14px;">
+
+    <!-- データ移行手順 -->
+    <div style="
+      font-family: 'Shippori Mincho', serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #3c5a6e;
+      margin-bottom: 8px;
+    ">📦 データ移行の手順</div>
+
+    <div style="font-size: 11px; color: #7a7164; margin-bottom: 10px; line-height: 1.6;">
+      今までの好き嫌いデータを新サイトに持ち込めます。
+    </div>
+
+    <!-- STEP 1 -->
+    <div style="
+      background: #f3ecdc;
+      border-left: 3px solid #3c5a6e;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      line-height: 1.7;
+    ">
+      <strong style="color: #3c5a6e;">STEP 1</strong>　下のボタンでデータをエクスポート<br>
+      <span style="color: #7a7164; font-size: 11px;">.json ファイルがダウンロードされます</span><br>
+      <button onclick="exportMigrationBackup()" style="
+        margin-top: 8px;
+        padding: 8px 16px;
+        border: 1px solid #3c5a6e;
+        border-radius: 999px;
+        background: #3c5a6e;
+        color: #fdf9ef;
+        font-size: 12px;
+        font-family: 'Zen Maru Gothic', sans-serif;
+        cursor: pointer;
+        font-weight: 700;
+      ">📤 データをエクスポート</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div style="
+      background: #f3ecdc;
+      border-left: 3px solid #3c5a6e;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      line-height: 1.7;
+    ">
+      <strong style="color: #3c5a6e;">STEP 2</strong>　新サイトを開く<br>
+      <a href="https://ram1x7.github.io/heartopilist/pet.html"
+         target="_blank"
+         style="color: #b1503b; font-size: 11px;">
+        ram1x7.github.io/heartopilist/pet.html →
+      </a>
+    </div>
+
+    <!-- STEP 3 -->
+    <div style="
+      background: #f3ecdc;
+      border-left: 3px solid #3c5a6e;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 18px;
+      font-size: 12px;
+      line-height: 1.7;
+    ">
+      <strong style="color: #3c5a6e;">STEP 3</strong>　新サイトの 📦ボタン →「バックアップを読み込む」でダウンロードした .json ファイルを選択
+    </div>
+
+    <!-- ボタン群 -->
+    <a href="https://ram1x7.github.io/heartopilist/pet.html"
+       style="
+         display: block;
+         background: #3c5a6e;
+         color: #fdf9ef;
+         text-align: center;
+         padding: 11px;
+         border-radius: 999px;
+         font-size: 13px;
+         font-weight: 700;
+         text-decoration: none;
+         margin-bottom: 8px;
+       ">
+      🐾 新サイトへ移動する
+    </a>
+
+    <button onclick="closeMigrationPopup()" style="
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #e4d9c2;
+      border-radius: 999px;
+      background: #f3ecdc;
+      color: #7a7164;
+      font-size: 12px;
+      font-family: 'Zen Maru Gothic', sans-serif;
+      cursor: pointer;
+    ">このまま旧サイトを使う</button>
+
+  </div>
+</div>
+
+<!-- ===================== 移行ポップアップJS ===================== -->
+<!-- 既存の <script> ブロック内の DOMContentLoaded に
+     openMigrationPopup(); を1行追加するだけでもOK -->
+<script>
+function openMigrationPopup() {
+  document.getElementById("migrationPopup").style.display = "block";
+}
+
+function closeMigrationPopup() {
+  document.getElementById("migrationPopup").style.display = "none";
+}
+
+/* 旧サイトのデータを新サイト互換の .json としてエクスポート */
+function exportMigrationBackup() {
+  const petsRaw = localStorage.getItem("pets");
+  const petsData = petsRaw ? JSON.parse(petsRaw) : [];
+  const data = {};
+
+  for (const k of Object.keys(localStorage)) {
+    if (k.startsWith("pet_")) {
+      try { data[k] = JSON.parse(localStorage.getItem(k)); }
+      catch(e) { data[k] = localStorage.getItem(k); }
+    }
+  }
+
+  const backup = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    pets: petsData,
+    data
+  };
+
+  const json = JSON.stringify(backup, null, 2);
+  const blob = new Blob([json], { type: "application/json" });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  const date = new Date().toISOString().slice(0, 10);
+  a.href     = url;
+  a.download = `hatopi-pet-backup-${date}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ページを開くたびに表示
+window.addEventListener("DOMContentLoaded", () => {
+  openMigrationPopup();
+});
+</script>
 
 <!-- 🌐 言語モーダル -->
 <div id="langModal" class="modal">
@@ -1663,6 +1887,7 @@ if (savedLang) {
       modal.style.display = "flex";
     }, 300);
   }
+  openMigrationPopup();
 });
 
 function openDataModal() {
